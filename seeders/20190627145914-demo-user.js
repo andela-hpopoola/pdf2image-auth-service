@@ -12,8 +12,8 @@ module.exports = {
         {
           email: 'demo@email.com',
           password,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: Sequelize.literal('NOW()'),
+          updatedAt: Sequelize.literal('NOW()')
         }
       ],
       {}
