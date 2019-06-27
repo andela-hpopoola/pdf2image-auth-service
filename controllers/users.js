@@ -5,7 +5,11 @@ const Users = require('../models').Users;
 module.exports = {
   register(req, res) {
     return Users.create(req.body)
-      .then(result => res.json(result))
+      .then(result => {
+        const user = result.toJSON();
+        delete user.password;
+        res.json(user);
+      })
       .catch(error => {
         res.status(412).json({ msg: error.message });
       });
@@ -28,8 +32,6 @@ module.exports = {
       const password = req.body.password;
       Users.findOne({ where: { email } })
         .then(user => {
-          var salt = bcrypt.genSaltSync(10);
-          var hash = bcrypt.hashSync('password1', salt);
           if (bcrypt.compareSync(password, user.password)) {
             const payload = { email: user.email };
             user.token = jwt.sign(payload, 'secret');
@@ -63,5 +65,11 @@ module.exports = {
         res.json(user);
       })
       .catch(() => res.send('No Token was found'));
+  },
+
+  logout(req, res) {
+    return res
+      .header('x-auth', '')
+      .json({ msg: 'You have successfully logged out' });
   }
 };
