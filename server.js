@@ -1,7 +1,8 @@
 const express = require('express');
-const path = require('path');
-const winston = require('winston');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
+
+const user = require('./controllers/users');
 
 // Get all environment variables
 require('dotenv').config();
@@ -14,12 +15,19 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// use morgan to log requests to the console
+app.use(morgan('dev'));
+
 app.get('/', (request, response) =>
   response.status(200).json({ msg: 'Welcome to Auth Microservice' })
 );
 
+app.post('/login', user.login);
+app.post('/register', user.register);
+app.post('/authenticate', user.authenticate);
+
 app.listen(port, () => {
-  winston.info(`Started up at port port ${port}`);
+  console.info(`Started up at port port ${port}`);
 });
 
 module.exports = app;
