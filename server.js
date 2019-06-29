@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const user = require('./controllers/users');
 
@@ -10,6 +11,9 @@ require('dotenv').config();
 // Set up the express app
 const app = express();
 const port = parseInt(process.env.PORT, 10) || 4000;
+
+//enable cors
+app.use(cors());
 
 // Parse incoming requests data
 app.use(bodyParser.json());

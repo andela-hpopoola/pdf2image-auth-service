@@ -62,9 +62,9 @@ module.exports = {
         if (!user) {
           res.json({ msg: 'User not found in db' });
         }
-        res.json(user);
+        res.json({ valid_user: true });
       })
-      .catch(() => res.send('No Token was found'));
+      .catch(() => res.send({ msg: 'No Token was found' }));
   },
 
   logout(req, res) {
