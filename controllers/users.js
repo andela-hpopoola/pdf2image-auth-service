@@ -51,6 +51,7 @@ module.exports = {
 
   authenticate(req, res) {
     const token = req.header('x-auth');
+    console.log(token);
     let decoded = {};
     try {
       decoded = jwt.verify(token, 'secret');
@@ -63,6 +64,7 @@ module.exports = {
           res.json({ msg: 'User not found in db' });
         }
         res.json({ valid_user: true });
+        res.end();
       })
       .catch(() => res.send({ msg: 'No Token was found' }));
   },

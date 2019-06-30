@@ -28,8 +28,8 @@ app.get('/', (request, response) =>
 
 app.post('/login', user.login);
 app.post('/register', user.register);
-app.post('/authenticate', user.authenticate);
-app.post('/logout', user.logout);
+app.get('/authenticate', user.authenticate);
+app.get('/logout', user.logout);
 
 app.listen(port, () => {
   console.info(`Started up at port port ${port}`);
