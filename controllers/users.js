@@ -4,22 +4,22 @@ const Users = require('../models').Users;
 
 module.exports = {
   register(req, res) {
-    return Users.create(req.body)
-      .then(result => {
-        const user = result.toJSON();
-        delete user.password;
-        res.json(user);
-      })
-      .catch(error => {
-        res.status(412).json({ msg: error.message });
-      });
-  },
-
-  getUser(req, res) {
-    return Users.findById(req.params.id)
+    return Users.findOne({
+      where: { email: req.body.email }
+    })
       .then(user => {
-        if (user) res.json(user);
-        else res.status(404).json({ msg: 'User not Found' });
+        if (user) {
+          res.status(412).json({ msg: 'Email has already been taken' });
+        }
+        Users.create(req.body)
+          .then(result => {
+            const user = result.toJSON();
+            delete user.password;
+            res.json(user);
+          })
+          .catch(error => {
+            res.status(412).json({ msg: error.message });
+          });
       })
       .catch(error => {
         res.status(412).json({ msg: error.message });
